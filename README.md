@@ -28,9 +28,19 @@
   * Either click the Import Changes link in the lower right hand corner, or
   * Right-click your project and click Maven -> Re-Import
   * Wait for the background tasks to complete
+  
+4. Edit you application.properties
+  * Add the following configuration:
+
+```
+mail.smtp.starttls.enable=true
+mail.smtp.auth=true
+mail.smtp.host=smtp.gmail.com
+mail.smtp.port=587
+```
 
 
-4. Create the index template
+6. Create the index template
   * Right click on templates and click New -> Html
   * Name it index.html
   * Edit it to look like this:
@@ -50,7 +60,7 @@
 </html>
 ```
 
-5. Create the redirect template after the email is sent
+7. Create the redirect template after the email is sent
   * Right click on templates and click New -> Html
   * Name it success.html
   * Edit it to look like this:
@@ -68,7 +78,7 @@
 </html>
 ```
 
-6. Create an Email Service class
+8. Create an Email Service class
   * Right click on com.example.demo -> New -> Java Class
   * Name it EmailService.java
   * Edit it to look like this:
@@ -84,22 +94,23 @@ import java.util.Properties;
 @Service
 public class EmailService {
 
-    private TemplateEngine templateEngine;
+    @Autowired
+	Environment env;
 
     @Autowired
     public EmailService(TemplateEngine templateEngine) {
         this.templateEngine = templateEngine;
     }
 
-    private Properties GetProperties(){
-        Properties props = new Properties();
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
+	private Properties GetProperties(){
+		Properties props = new Properties();
+		props.put("mail.smtp.starttls.enable", env.getProperty("mail.smtp.starttls.enable"));
+		props.put("mail.smtp.auth", env.getProperty("mail.smtp.auth"));
+		props.put("mail.smtp.host", env.getProperty("mail.smtp.host"));
+		props.put("mail.smtp.port", env.getProperty("mail.smtp.port"));
 
-        return  props;
-    }
+		return  props;
+	}
 
     private Session GetSession(){
         // Email account credentials
@@ -150,7 +161,7 @@ public class EmailService {
 }
 ```
 
-7. Create the HomeController
+9. Create the HomeController
   * Right click on com.example.demo -> New -> Java Class
   * Name it HomeController.java
   * Edit it to look like this:
@@ -180,7 +191,7 @@ public class HomeController {
   }
 }
 ```
-8. Run your application and open a browser, and you should see this:
+10. Run your application and open a browser, and you should see this:
 ![](https://github.com/romielisse/springlessonimg/blob/master/simpleemail.png)
 
 If you click on the button, you should see this:

@@ -85,22 +85,27 @@ mail.smtp.port=587
 
 ```java
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.*;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 import javax.mail.*;
-import javax.mail.internet.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 @Service
 public class EmailService {
 
-    @Autowired
+	private TemplateEngine templateEngine;
+
+	@Autowired
 	Environment env;
 
-    @Autowired
-    public EmailService(TemplateEngine templateEngine) {
-        this.templateEngine = templateEngine;
-    }
+	@Autowired
+		public EmailService(TemplateEngine templateEngine) {
+		this.templateEngine = templateEngine;
+	}
 
 	private Properties GetProperties(){
 		Properties props = new Properties();
@@ -192,10 +197,10 @@ public class HomeController {
 }
 ```
 10. Run your application and open a browser, and you should see this:
-![](https://github.com/romielisse/springlessonimg/blob/master/simpleemail.png)
+![](https://github.com/ajhenley/unofficialguides/blob/master/IntroToSpringBoot/img/Lesson33a.png)
 
 If you click on the button, you should see this:
-![](https://github.com/romielisse/springlessonimg/blob/master/emailsent.png)
+![](https://github.com/ajhenley/unofficialguides/blob/master/IntroToSpringBoot/img/Lesson33b.png)
 
 If you log into the gmail account provided, you should be able to locate the email that was just sent.
 
